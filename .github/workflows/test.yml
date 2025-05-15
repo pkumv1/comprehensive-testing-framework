@@ -1,0 +1,234 @@
+name: Test Suite
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    - cron: '0 0 * * *' # Daily at midnight UTC
+
+jobs:
+  unit-and-integration:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Run unit tests
+      run: npm run test:unit
+    
+    - name: Run integration tests
+      run: npm run test:integration
+    
+    - name: Generate coverage report
+      run: npm run coverage
+    
+    - name: Upload coverage artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: coverage-report
+        path: results/coverage/
+
+  playwright:
+    runs-on: ubuntu-latest
+    needs: unit-and-integration
+    
+    strategy:
+      fail-fast: false
+      matrix:
+        project: [chromium, firefox, webkit]
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Use Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18.x
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Install Playwright browsers
+      run: npx playwright install --with-deps ${{ matrix.project }}
+    
+    - name: Run Playwright tests
+      run: npx playwright test --project=${{ matrix.project }}
+      env:
+        CI: true
+    
+    - name: Upload test results
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: playwright-results-${{ matrix.project }}
+        path: results/playwright-report/
+
+  visual-regression:
+    runs-on: ubuntu-latest
+    needs: playwright
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Use Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18.x
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Install Playwright browsers
+      run: npx playwright install --with-deps chromium
+    
+    - name: Run visual tests
+      run: npm run test:visual
+      env:
+        CI: true
+    
+    - name: Upload visual test results
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: visual-test-results
+        path: results/visual/
+
+  accessibility:
+    runs-on: ubuntu-latest
+    needs: unit-and-integration
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Use Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18.x
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Install Playwright browsers
+      run: npx playwright install --with-deps chromium
+    
+    - name: Run accessibility tests
+      run: npm run test:accessibility
+      env:
+        CI: true
+    
+    - name: Upload accessibility test results
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: accessibility-test-results
+        path: results/accessibility-report/
+
+  api-tests:
+    runs-on: ubuntu-latest
+    needs: unit-and-integration
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Use Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18.x
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Run API tests
+      run: npm run test:api
+      env:
+        CI: true
+    
+    - name: Upload API test results
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: api-test-results
+        path: results/api/
+
+  performance:
+    runs-on: ubuntu-latest
+    needs: [playwright, api-tests]
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Use Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18.x
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Run performance tests
+      run: npm run test:performance
+      env:
+        CI: true
+    
+    - name: Upload performance test results
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: performance-test-results
+        path: results/performance/
+
+  generate-report:
+    runs-on: ubuntu-latest
+    needs: [unit-and-integration, playwright, visual-regression, accessibility, api-tests, performance]
+    if: always()
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Use Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18.x
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Download all artifacts
+      uses: actions/download-artifact@v3
+      with:
+        path: downloaded-artifacts
+    
+    - name: Copy artifacts to results directory
+      run: |
+        mkdir -p results
+        cp -r downloaded-artifacts/* results/
+    
+    - name: Generate comprehensive report
+      run: npm run report
+    
+    - name: Upload final report
+      uses: actions/upload-artifact@v3
+      with:
+        name: comprehensive-test-report
+        path: results/report.html
