@@ -1,0 +1,141 @@
+{
+  "timestamp": "2025-05-15T10:00:00.000Z",
+  "duration": 142.5,
+  "summary": {
+    "total": 87,
+    "passed": 79,
+    "failed": 5,
+    "skipped": 3,
+    "flakyTests": 2
+  },
+  "coverage": {
+    "lines": 84.3,
+    "functions": 88.9,
+    "branches": 79.4,
+    "statements": 84.3
+  },
+  "frameworks": {
+    "playwright": {
+      "total": 42,
+      "passed": 40,
+      "failed": 1,
+      "skipped": 1,
+      "duration": 68.2
+    },
+    "selenium": {
+      "total": 25,
+      "passed": 22,
+      "failed": 2,
+      "skipped": 1,
+      "duration": 45.8
+    },
+    "puppeteer": {
+      "total": 20,
+      "passed": 17,
+      "failed": 2,
+      "skipped": 1,
+      "duration": 28.5
+    }
+  },
+  "testTypes": {
+    "unit": {
+      "total": 25,
+      "passed": 24,
+      "failed": 1,
+      "skipped": 0,
+      "coverage": 92.1
+    },
+    "integration": {
+      "total": 18,
+      "passed": 16,
+      "failed": 1,
+      "skipped": 1,
+      "coverage": 85.7
+    },
+    "system": {
+      "total": 8,
+      "passed": 7,
+      "failed": 0,
+      "skipped": 1,
+      "coverage": 78.3
+    },
+    "acceptance": {
+      "total": 6,
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "coverage": 100.0
+    },
+    "regression": {
+      "total": 12,
+      "passed": 11,
+      "failed": 1,
+      "skipped": 0,
+      "coverage": 89.2
+    },
+    "performance": {
+      "total": 5,
+      "passed": 4,
+      "failed": 1,
+      "skipped": 0
+    },
+    "security": {
+      "total": 7,
+      "passed": 6,
+      "failed": 1,
+      "skipped": 0
+    },
+    "accessibility": {
+      "total": 4,
+      "passed": 3,
+      "failed": 0,
+      "skipped": 1
+    },
+    "api": {
+      "total": 6,
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "coverage": 88.5
+    },
+    "visual": {
+      "total": 6,
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "risksAndDebts": {
+    "testDebt": 12,
+    "riskScore": "Low",
+    "maintenanceIndex": 76,
+    "techDebtItems": [
+      {
+        "id": "TD-001",
+        "description": "Flaky test in login validation",
+        "impact": "Medium",
+        "effort": "Low"
+      },
+      {
+        "id": "TD-002",
+        "description": "Missing edge case coverage in password validation",
+        "impact": "Low",
+        "effort": "Low"
+      },
+      {
+        "id": "TD-003",
+        "description": "System tests have low coverage",
+        "impact": "Medium",
+        "effort": "High"
+      }
+    ],
+    "priorityFixes": [
+      "Security test failure - XSS prevention",
+      "Performance test failure - API response time"
+    ]
+  },
+  "trends": {
+    "coverageTrend": [83.1, 83.5, 84.0, 84.3],
+    "passRateTrend": [88.2, 89.5, 90.1, 90.8]
+  }
+}

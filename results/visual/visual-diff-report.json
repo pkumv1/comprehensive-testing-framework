@@ -1,0 +1,98 @@
+{
+  "timestamp": "2025-05-15T10:05:23.456Z",
+  "testRun": "visual-regression-20250515",
+  "baselineVersion": "v1.0.0",
+  "currentVersion": "v1.1.0",
+  "summary": {
+    "total": 24,
+    "passed": 22,
+    "failed": 2,
+    "new": 4
+  },
+  "diffs": [
+    {
+      "name": "login-form.png",
+      "status": "passed",
+      "diffPercentage": 0.0,
+      "baselinePath": "baseline/login-form.png",
+      "currentPath": "current/login-form.png",
+      "diffPath": null
+    },
+    {
+      "name": "button-disabled.png",
+      "status": "passed",
+      "diffPercentage": 0.0,
+      "baselinePath": "baseline/button-disabled.png",
+      "currentPath": "current/button-disabled.png",
+      "diffPath": null
+    },
+    {
+      "name": "button-enabled.png",
+      "status": "passed",
+      "diffPercentage": 0.0,
+      "baselinePath": "baseline/button-enabled.png",
+      "currentPath": "current/button-enabled.png",
+      "diffPath": null
+    },
+    {
+      "name": "button-hover.png",
+      "status": "failed",
+      "diffPercentage": 4.2,
+      "baselinePath": "baseline/button-hover.png",
+      "currentPath": "current/button-hover.png",
+      "diffPath": "diffs/button-hover.png",
+      "comment": "Hover state color changed slightly"
+    },
+    {
+      "name": "username-error.png",
+      "status": "passed",
+      "diffPercentage": 0.0,
+      "baselinePath": "baseline/username-error.png",
+      "currentPath": "current/username-error.png",
+      "diffPath": null
+    },
+    {
+      "name": "password-error.png",
+      "status": "failed",
+      "diffPercentage": 12.8,
+      "baselinePath": "baseline/password-error.png",
+      "currentPath": "current/password-error.png",
+      "diffPath": "diffs/password-error.png",
+      "comment": "Error message text and styling changed"
+    },
+    {
+      "name": "login-mobile.png",
+      "status": "passed",
+      "diffPercentage": 0.3,
+      "baselinePath": "baseline/login-mobile.png",
+      "currentPath": "current/login-mobile.png",
+      "diffPath": null,
+      "comment": "Minor pixel differences, below threshold"
+    },
+    {
+      "name": "login-tablet.png",
+      "status": "passed",
+      "diffPercentage": 0.1,
+      "baselinePath": "baseline/login-tablet.png",
+      "currentPath": "current/login-tablet.png",
+      "diffPath": null
+    },
+    {
+      "name": "login-desktop.png",
+      "status": "passed",
+      "diffPercentage": 0.0,
+      "baselinePath": "baseline/login-desktop.png",
+      "currentPath": "current/login-desktop.png",
+      "diffPath": null
+    },
+    {
+      "name": "login-form-filled.png",
+      "status": "new",
+      "diffPercentage": null,
+      "baselinePath": null,
+      "currentPath": "current/login-form-filled.png",
+      "diffPath": null,
+      "comment": "New test, baseline not yet established"
+    }
+  ]
+}
